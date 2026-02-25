@@ -324,7 +324,7 @@ router.post('/complete', [
         }
 
         // Generate order number
-        const orderNumber = 'WXC-' + uuidv4().substring(0, 8).toUpperCase();
+        const orderNumber = 'SM-' + uuidv4().substring(0, 8).toUpperCase();
 
         // Create order
         await db.run(`

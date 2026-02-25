@@ -1,6 +1,6 @@
 <?php
 /**
- * WYATT XXX COLE - Pricing API
+ * STORMY MARIE - Pricing API
  * Handles booking and subscription pricing management
  */
 
@@ -100,7 +100,7 @@ function getDefaultPricing() {
         ],
         'subscriptions' => [
             'free' => [
-                'name' => 'Ranch Hand',
+                'name' => 'Sugar Baby',
                 'tagline' => "Just gettin' started",
                 'price' => 0,
                 'period' => 'forever',
@@ -125,7 +125,7 @@ function getDefaultPricing() {
                 'featured' => false,
                 'badge' => '',
                 'features' => [
-                    ['text' => 'Everything in Ranch Hand', 'included' => true],
+                    ['text' => 'Everything in Sugar Baby', 'included' => true],
                     ['text' => 'Exclusive photo sets weekly', 'included' => true],
                     ['text' => 'Behind-the-scenes content', 'included' => true],
                     ['text' => 'Early access to new releases', 'included' => true],
@@ -152,7 +152,7 @@ function getDefaultPricing() {
                 'discount' => 10
             ],
             'vip' => [
-                'name' => 'VIP Cowboy',
+                'name' => 'VIP Queen',
                 'tagline' => 'Top of the herd',
                 'price' => 49.99,
                 'period' => 'month',

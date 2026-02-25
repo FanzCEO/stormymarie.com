@@ -1,6 +1,6 @@
-# WYATT XXX COLE - Backend API
+# STORMY MARIE - Backend API
 
-Node.js/Express backend for the WXXXC website.
+Node.js/Express backend for the SM website.
 
 ## Quick Start
 
@@ -34,8 +34,8 @@ SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=your-email
 SMTP_PASS=your-password
-EMAIL_FROM=noreply@wyattxxxcole.xxx
-BOOKING_EMAIL=booking@wyattxxxcole.xxx
+EMAIL_FROM=noreply@stormymarie.xxx
+BOOKING_EMAIL=booking@stormymarie.xxx
 
 # Stripe (optional)
 STRIPE_SECRET_KEY=sk_test_xxx

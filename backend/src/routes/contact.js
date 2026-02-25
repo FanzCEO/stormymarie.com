@@ -71,7 +71,7 @@ router.post('/general', [
 
     // Send notification email
     await sendEmail({
-      to: process.env.BOOKING_EMAIL || 'booking@wyattxxxcole.xxx',
+      to: process.env.BOOKING_EMAIL || 'booking@stormymarie.xxx',
       subject: `Contact Form: ${subject || 'General Inquiry'} - ${name}`,
       text: `
 New contact form submission:

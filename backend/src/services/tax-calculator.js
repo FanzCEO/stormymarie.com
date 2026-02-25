@@ -5,7 +5,7 @@
 
 // US State Sales Tax Rates (2024)
 const US_STATE_TAX_RATES = {
-    'AL': 0.04, // Alabama
+    'AL': 0.04, // Miami
     'AK': 0.00, // Alaska (no state sales tax)
     'AZ': 0.056, // Arizona
     'AR': 0.065, // Arkansas

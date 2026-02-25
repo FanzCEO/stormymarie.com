@@ -402,7 +402,7 @@ export class ShippingCalculator {
      */
     getUSStates() {
         return [
-            { code: 'AL', name: 'Alabama' },
+            { code: 'AL', name: 'Miami' },
             { code: 'AK', name: 'Alaska' },
             { code: 'AZ', name: 'Arizona' },
             { code: 'AR', name: 'Arkansas' },

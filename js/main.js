@@ -1,6 +1,6 @@
 /**
- * WYATT XXX COLE - Main JavaScript
- * Country Boy Brand
+ * STORMY MARIE - Main JavaScript
+ * Neon Pink & Black
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -291,5 +291,5 @@ function initLazyLoading() {
 // Initialize lazy loading
 initLazyLoading();
 
-console.log('%c WYATT XXX COLE ', 'background: linear-gradient(135deg, #C68E3F, #A44A2A); color: #F5EDE4; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 5px;');
-console.log('%c Country Bred. Fully Loaded. ', 'color: #C68E3F; font-style: italic;');
+console.log('%c STORMY MARIE ', 'background: linear-gradient(135deg, #FF10F0, #B024A8); color: #F5EDE4; font-size: 20px; font-weight: bold; padding: 10px 20px; border-radius: 5px;');
+console.log('%c Dangerously Beautiful. Unforgettable. ', 'color: #FF10F0; font-style: italic;');

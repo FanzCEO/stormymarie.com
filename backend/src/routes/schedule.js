@@ -113,7 +113,7 @@ I'll drop you a line when dates are confirmed so you don't miss out.
 
 See you there!
 
-- WYATT XXX COLE
+- STORMY MARIE
       `
     });
 

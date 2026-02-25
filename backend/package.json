@@ -1,7 +1,7 @@
 {
-  "name": "wyattxxxcole-backend",
+  "name": "stormymarie-backend",
   "version": "1.0.0",
-  "description": "Backend API for Wyatt XXX Cole website",
+  "description": "Backend API for Stormy Marie website",
   "main": "src/server.js",
   "type": "module",
   "scripts": {

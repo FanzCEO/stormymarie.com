@@ -9,7 +9,7 @@ const dbConfig = {
   port: parseInt(process.env.DB_PORT) || 3306,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'wyattxxxcole',
+  database: process.env.DB_NAME || 'stormymarie',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -17,50 +17,54 @@ const dbConfig = {
   keepAliveInitialDelay: 0
 };
 
-// Create connection pool
-const pool = mysql.createPool(dbConfig);
+let pool;
+let connected = false;
 
-// Test connection
-pool.getConnection()
-  .then(conn => {
-    console.log('Database connected successfully to MariaDB');
-    conn.release();
-  })
-  .catch(err => {
-    console.error('Database connection failed:', err.message);
-  });
+try {
+  pool = mysql.createPool(dbConfig);
+  pool.getConnection()
+    .then(conn => {
+      console.log('Database connected successfully to MariaDB');
+      connected = true;
+      conn.release();
+    })
+    .catch(err => {
+      console.warn('Database not available (running in static mode):', err.message);
+    });
+} catch (err) {
+  console.warn('Database not configured (running in static mode)');
+}
 
-// Helper class to provide SQLite-like synchronous-style API
-// but actually uses async/await under the hood
+// Helper class with graceful fallback when DB is unavailable
 const db = {
   pool,
 
-  // Execute a query (for INSERT, UPDATE, DELETE)
   async execute(sql, params = []) {
+    if (!pool) return { affectedRows: 0 };
     const [result] = await pool.execute(sql, params);
     return result;
   },
 
-  // Query and get all results
   async query(sql, params = []) {
+    if (!pool) return [];
     const [rows] = await pool.execute(sql, params);
     return rows;
   },
 
-  // Get single row
   async get(sql, params = []) {
+    if (!pool) return null;
     const [rows] = await pool.execute(sql, params);
     return rows[0] || null;
   },
 
-  // Get all rows
   async all(sql, params = []) {
+    if (!pool) return [];
     const [rows] = await pool.execute(sql, params);
     return rows;
   },
 
-  // Run a query (alias for execute)
   async run(sql, params = []) {
+    if (!pool) return { lastInsertRowid: 0, changes: 0 };
     const [result] = await pool.execute(sql, params);
     return {
       lastInsertRowid: result.insertId,
@@ -68,10 +72,10 @@ const db = {
     };
   },
 
-  // Prepare statement (returns object with run, get, all methods)
   prepare(sql) {
     return {
       run: async (...params) => {
+        if (!pool) return { lastInsertRowid: 0, changes: 0 };
         const [result] = await pool.execute(sql, params);
         return {
           lastInsertRowid: result.insertId,
@@ -79,18 +83,20 @@ const db = {
         };
       },
       get: async (...params) => {
+        if (!pool) return null;
         const [rows] = await pool.execute(sql, params);
         return rows[0] || null;
       },
       all: async (...params) => {
+        if (!pool) return [];
         const [rows] = await pool.execute(sql, params);
         return rows;
       }
     };
   },
 
-  // Transaction helper
   async transaction(callback) {
+    if (!pool) return null;
     const connection = await pool.getConnection();
     await connection.beginTransaction();
     try {

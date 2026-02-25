@@ -1,6 +1,6 @@
 /* ============================================
-   WYATT XXX COLE - VISUAL EFFECTS
-   Warm country animations and effects
+   STORMY MARIE - VISUAL EFFECTS
+   Neon pink glow animations and effects
    ============================================ */
 
 /* ============================================
@@ -20,21 +20,21 @@
    ============================================ */
 .accent-glow {
     text-shadow:
-        0 0 4px rgba(198, 142, 63, 0.3),
-        0 0 8px rgba(198, 142, 63, 0.15);
+        0 0 4px rgba(255, 16, 240, 0.3),
+        0 0 8px rgba(255, 16, 240, 0.15);
     animation: textPulse 3s ease-in-out infinite;
 }
 
 @keyframes textPulse {
     0%, 100% {
         text-shadow:
-            0 0 4px rgba(198, 142, 63, 0.3),
-            0 0 8px rgba(198, 142, 63, 0.15);
+            0 0 4px rgba(255, 16, 240, 0.3),
+            0 0 8px rgba(255, 16, 240, 0.15);
     }
     50% {
         text-shadow:
-            0 0 6px rgba(198, 142, 63, 0.4),
-            0 0 12px rgba(198, 142, 63, 0.2);
+            0 0 6px rgba(255, 16, 240, 0.4),
+            0 0 12px rgba(255, 16, 240, 0.2);
     }
 }
 
@@ -102,8 +102,8 @@
 .card:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow:
-        0 20px 40px rgba(198, 142, 63, 0.15),
-        0 0 60px rgba(164, 74, 42, 0.1);
+        0 20px 40px rgba(255, 16, 240, 0.15),
+        0 0 60px rgba(176, 36, 168, 0.1);
 }
 
 /* ============================================
@@ -121,7 +121,7 @@
     background: linear-gradient(
         45deg,
         transparent 30%,
-        rgba(198, 142, 63, 0.3) 50%,
+        rgba(255, 16, 240, 0.3) 50%,
         transparent 70%
     );
     transform: translateX(-100%);
@@ -142,8 +142,8 @@
 
 .nav__logo:hover {
     text-shadow:
-        0 0 10px rgba(198, 142, 63, 0.5),
-        0 0 20px rgba(198, 142, 63, 0.3);
+        0 0 10px rgba(255, 16, 240, 0.5),
+        0 0 20px rgba(255, 16, 240, 0.3);
     transform: scale(1.05);
 }
 
@@ -200,7 +200,7 @@
 
 .tag:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(198, 142, 63, 0.3);
+    box-shadow: 0 5px 15px rgba(255, 16, 240, 0.3);
 }
 
 /* ============================================
@@ -211,9 +211,9 @@
 .form__select:focus {
     border-color: var(--whiskey);
     box-shadow:
-        0 0 0 3px rgba(198, 142, 63, 0.1),
-        0 0 20px rgba(198, 142, 63, 0.15),
-        inset 0 0 10px rgba(198, 142, 63, 0.05);
+        0 0 0 3px rgba(255, 16, 240, 0.1),
+        0 0 20px rgba(255, 16, 240, 0.15),
+        inset 0 0 10px rgba(255, 16, 240, 0.05);
 }
 
 /* ============================================
@@ -292,10 +292,10 @@
 
 @keyframes badgeGlow {
     0%, 100% {
-        box-shadow: 0 0 15px rgba(198, 142, 63, 0.3);
+        box-shadow: 0 0 15px rgba(255, 16, 240, 0.3);
     }
     50% {
-        box-shadow: 0 0 25px rgba(198, 142, 63, 0.5);
+        box-shadow: 0 0 25px rgba(255, 16, 240, 0.5);
     }
 }
 
@@ -309,8 +309,8 @@
 .product:hover {
     transform: translateY(-8px);
     box-shadow:
-        0 20px 40px rgba(198, 142, 63, 0.15),
-        0 0 60px rgba(164, 74, 42, 0.1);
+        0 20px 40px rgba(255, 16, 240, 0.15),
+        0 0 60px rgba(176, 36, 168, 0.1);
 }
 
 /* ============================================

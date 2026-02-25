@@ -58,8 +58,8 @@ router.get('/posts', async (req, res) => {
 
       return {
         id: post.id,
-        author: 'Wyatt XXX Cole',
-        avatar: 'WXC',
+        author: 'Stormy Marie',
+        avatar: 'SM',
         timestamp: timeAgo,
         content: post.content,
         mediaUrl: post.media_url,
@@ -111,8 +111,8 @@ router.get('/posts/:id', async (req, res) => {
 
     res.json({
       id: post.id,
-      author: 'Wyatt XXX Cole',
-      avatar: 'WXC',
+      author: 'Stormy Marie',
+      avatar: 'SM',
       timestamp: getTimeAgo(new Date(post.created_at)),
       content: post.content,
       mediaUrl: post.media_url,

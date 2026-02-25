@@ -1,6 +1,6 @@
 <?php
 /**
- * WYATT XXX COLE - World API
+ * STORMY MARIE - World API
  * Handles user registration, login, email verification, and admin moderation
  */
 
@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 define('USERS_FILE', __DIR__ . '/world_users.json');
-define('SITE_URL', 'https://wyattxxxcole.com');
-define('SITE_NAME', 'WYATT XXX COLE World');
-define('FROM_EMAIL', 'noreply@wyattxxxcole.com');
+define('SITE_URL', 'https://stormymarie.com');
+define('SITE_NAME', 'STORMY MARIE World');
+define('FROM_EMAIL', 'noreply@stormymarie.com');
 
 function respond($data, $code = 200) {
     http_response_code($code);

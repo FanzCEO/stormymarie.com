@@ -6,8 +6,8 @@ import db from '../config/database.js';
 
 const router = express.Router();
 
-// JWT Secret for Wyatt World users
-const JWT_SECRET = process.env.WORLD_JWT_SECRET || process.env.JWT_SECRET || 'wyatt-world-secret-key-change-in-prod';
+// JWT Secret for Stormy World users
+const JWT_SECRET = process.env.WORLD_JWT_SECRET || process.env.JWT_SECRET || 'stormy-world-secret-key-change-in-prod';
 
 // ============================================
 // HELPER FUNCTIONS
@@ -33,7 +33,7 @@ function getTimeAgo(date) {
   return 'Just now';
 }
 
-// Middleware to verify Wyatt World user token
+// Middleware to verify Stormy World user token
 const authenticateWorldUser = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -122,7 +122,7 @@ router.post('/auth/register', [
     );
 
     res.status(201).json({
-      message: 'Welcome to Wyatt World!',
+      message: 'Welcome to Stormy World!',
       token,
       user: {
         id: result.lastInsertRowid,
@@ -225,7 +225,7 @@ router.get('/posts', optionalAuth, async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
     const offset = (page - 1) * limit;
-    const tab = req.query.tab || 'all'; // all, following, wyatt
+    const tab = req.query.tab || 'all'; // all, following, stormy
 
     let whereClause = 'WHERE p.is_active = 1';
     const params = [];
@@ -238,10 +238,10 @@ router.get('/posts', optionalAuth, async (req, res) => {
       whereClause += " AND p.visibility != 'inner_circle'";
     }
 
-    if (tab === 'wyatt') {
-      whereClause += ' AND p.is_wyatt_post = 1';
+    if (tab === 'stormy') {
+      whereClause += ' AND p.is_stormy_post = 1';
     } else if (tab === 'following' && req.worldUser) {
-      whereClause += ' AND (p.author_id IN (SELECT following_id FROM world_follows WHERE follower_id = ?) OR p.is_wyatt_post = 1)';
+      whereClause += ' AND (p.author_id IN (SELECT following_id FROM world_follows WHERE follower_id = ?) OR p.is_stormy_post = 1)';
       params.push(req.worldUser.id);
     }
 
@@ -266,12 +266,12 @@ router.get('/posts', optionalAuth, async (req, res) => {
 
     const formattedPosts = posts.map(post => ({
       id: post.id,
-      author: post.is_wyatt_post ? {
-        username: 'WyattXXXCole',
-        display_name: 'Wyatt XXX Cole',
+      author: post.is_stormy_post ? {
+        username: 'StormyMarie',
+        display_name: 'Stormy Marie',
         avatar_url: null,
         is_verified: true,
-        is_wyatt: true
+        is_stormy: true
       } : {
         id: post.author_id,
         username: post.username,
@@ -321,7 +321,7 @@ router.post('/posts', authenticateWorldUser, [
     const { content, media_urls, visibility = 'public', ppv_price } = req.body;
 
     const result = await db.run(`
-      INSERT INTO world_posts (author_id, content, media_urls, visibility, ppv_price, is_wyatt_post)
+      INSERT INTO world_posts (author_id, content, media_urls, visibility, ppv_price, is_stormy_post)
       VALUES (?, ?, ?, ?, ?, 0)
     `, [
       req.worldUser.id,
@@ -658,7 +658,7 @@ router.get('/membership/tiers', (req, res) => {
       id: 'vip',
       name: 'VIP',
       price: 9.99,
-      features: ['All Free features', 'Exclusive VIP content', 'VIP group chat access', 'Direct message Wyatt', 'Early access to new content', 'Monthly live Q&A']
+      features: ['All Free features', 'Exclusive VIP content', 'VIP group chat access', 'Direct message Stormy', 'Early access to new content', 'Monthly live Q&A']
     },
     {
       id: 'inner_circle',

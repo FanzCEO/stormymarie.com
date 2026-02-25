@@ -4,7 +4,7 @@
 
 This repository contains **PROPRIETARY AND CONFIDENTIAL** software owned by:
 
-**Joshua Stone** (also known as Wyatt Cole)
+**Joshua Stone** (also known as Stormy Marie)
 Licensed exclusively to **FANZ Group Holdings LLC**
 
 ---
@@ -80,7 +80,7 @@ Unauthorized copying, distribution, or use will result in:
 
 ### Copyright
 ```
-Copyright © 2025 Joshua Stone (Wyatt Cole)
+Copyright © 2025 Joshua Stone (Stormy Marie)
 All Rights Reserved.
 ```
 
@@ -106,8 +106,8 @@ FANZ Group Holdings LLC
 Email: legal@fanz.website
 
 **Owner**
-Joshua Stone (Wyatt Cole)
-Email: wyatt@fanz.website
+Joshua Stone (Stormy Marie)
+Email: stormy@fanz.website
 
 ---
 

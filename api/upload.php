@@ -1,6 +1,6 @@
 <?php
 /**
- * WYATT XXX COLE - Image Upload API
+ * STORMY MARIE - Image Upload API
  * Handles logo, hero, and gallery image uploads
  */
 
@@ -367,9 +367,9 @@ function handleGetSettings() {
     $settingsFile = __DIR__ . '/settings.json';
 
     $defaults = [
-        'tagline' => 'Country Bred. Fully Loaded.',
+        'tagline' => 'Sinfully seductive. Dripping wet. Addictive.',
         'reviewCount' => 132,
-        'contactEmail' => 'contact@wyattxxxcole.com',
+        'contactEmail' => 'contact@stormymarie.com',
         'logoUrl' => 'images/logo.png',
         'heroUrl' => ''
     ];
@@ -399,9 +399,9 @@ function handleSaveSettings() {
     $input = json_decode(file_get_contents('php://input'), true);
 
     $settings = [
-        'tagline' => $input['tagline'] ?? 'Country Bred. Fully Loaded.',
+        'tagline' => $input['tagline'] ?? 'Sinfully seductive. Dripping wet. Addictive.',
         'reviewCount' => intval($input['reviewCount'] ?? 132),
-        'contactEmail' => $input['contactEmail'] ?? 'contact@wyattxxxcole.com'
+        'contactEmail' => $input['contactEmail'] ?? 'contact@stormymarie.com'
     ];
 
     $settingsFile = __DIR__ . '/settings.json';

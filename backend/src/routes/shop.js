@@ -134,7 +134,7 @@ router.post('/orders', [
     const total = subtotal + shipping;
 
     // Generate order number
-    const orderNumber = 'WXC-' + uuidv4().substring(0, 8).toUpperCase();
+    const orderNumber = 'SM-' + uuidv4().substring(0, 8).toUpperCase();
 
     // Create order
     const result = await db.run(`

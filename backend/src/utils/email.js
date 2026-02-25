@@ -31,7 +31,7 @@ const transporter = createTransporter();
 export const sendEmail = async ({ to, subject, text, html }) => {
   try {
     const result = await transporter.sendMail({
-      from: process.env.EMAIL_FROM || 'noreply@wyattxxxcole.xxx',
+      from: process.env.EMAIL_FROM || 'noreply@stormymarie.xxx',
       to,
       subject,
       text,
@@ -65,7 +65,7 @@ Submitted: ${new Date().toISOString()}
   `;
 
   return sendEmail({
-    to: process.env.BOOKING_EMAIL || 'booking@wyattxxxcole.xxx',
+    to: process.env.BOOKING_EMAIL || 'booking@stormymarie.xxx',
     subject,
     text
   });
@@ -91,7 +91,7 @@ Submitted: ${new Date().toISOString()}
   `;
 
   return sendEmail({
-    to: process.env.BOOKING_EMAIL || 'booking@wyattxxxcole.xxx',
+    to: process.env.BOOKING_EMAIL || 'booking@stormymarie.xxx',
     subject,
     text
   });
@@ -116,7 +116,7 @@ Total: $${order.total.toFixed(2)}
 
 We'll notify you when your order ships.
 
-- WYATT XXX COLE
+- STORMY MARIE
   `;
 
   return sendEmail({
@@ -127,11 +127,11 @@ We'll notify you when your order ships.
 };
 
 export const sendNewsletterWelcome = async (email) => {
-  const subject = 'Welcome to the Neon Rebellion!';
+  const subject = 'Welcome to the Neon Seduction!';
   const text = `
 Welcome to the inner circle!
 
-You're now subscribed to exclusive drop alerts and updates from WYATT XXX COLE.
+You're now subscribed to exclusive drop alerts and updates from STORMY MARIE.
 
 Stay tuned for:
 - New merch drops
@@ -141,7 +141,7 @@ Stay tuned for:
 
 See you in the neon glow.
 
-- WYATT XXX COLE
+- STORMY MARIE
 
 ---
 To unsubscribe, visit: ${process.env.FRONTEND_URL}/unsubscribe?email=${encodeURIComponent(email)}

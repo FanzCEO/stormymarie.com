@@ -1,5 +1,5 @@
 /**
- * WYATT XXX COLE - Service Worker
+ * STORMY MARIE - Service Worker
  * PWA Offline Support & Caching
  */
 
@@ -135,7 +135,7 @@ self.addEventListener('sync', event => {
 // Push notifications
 self.addEventListener('push', event => {
   const options = {
-    body: event.data ? event.data.text() : 'New update from WXXXC!',
+    body: event.data ? event.data.text() : 'New update from SM!',
     icon: '/images/icon-192x192.png',
     badge: '/images/badge-72x72.png',
     vibrate: [100, 50, 100],
@@ -150,7 +150,7 @@ self.addEventListener('push', event => {
   };
 
   event.waitUntil(
-    self.registration.showNotification('WYATT XXX COLE', options)
+    self.registration.showNotification('STORMY MARIE', options)
   );
 });
 

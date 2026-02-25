@@ -56,13 +56,16 @@ app.use('/api', limiter);
 // Serve static files from uploads
 app.use('/uploads', express.static(join(__dirname, '../uploads')));
 
+// Serve frontend static files
+app.use(express.static(join(__dirname, '../../')));
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Public site settings (for frontend to fetch background images, etc.)
-app.get('/api/settings/public', (req, res) => {
+app.get('/api/settings/public', async (req, res) => {
   try {
     const publicKeys = [
       'site_name', 'site_tagline', 'logo_text',
@@ -71,15 +74,21 @@ app.get('/api/settings/public', (req, res) => {
     ];
 
     const settings = {};
-    publicKeys.forEach(key => {
-      const row = db.prepare('SELECT setting_value FROM site_settings WHERE setting_key = ?').get(key);
+    for (const key of publicKeys) {
+      const row = await db.get('SELECT setting_value FROM site_settings WHERE setting_key = ?', [key]);
       settings[key] = row?.setting_value || '';
-    });
+    }
 
     res.json({ settings });
   } catch (error) {
-    console.error('Settings fetch error:', error);
-    res.status(500).json({ error: 'Failed to fetch settings' });
+    // Return defaults if DB not available
+    res.json({ settings: {
+      site_name: 'STORMY MARIE',
+      site_tagline: 'Sinfully seductive. Dripping wet. Addictive.',
+      logo_text: 'STORMY MARIE',
+      bio_short: 'Just a horny Miami girl who turned her dirty habits into a career. Wet. Wild. Irresistible.',
+      base_city: 'Miami'
+    }});
   }
 });
 
@@ -104,16 +113,20 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
+// 404 handler - serve index.html for non-API routes, JSON for API routes
 app.use((req, res) => {
-  res.status(404).json({ error: 'Endpoint not found' });
+  if (req.path.startsWith('/api/')) {
+    res.status(404).json({ error: 'Endpoint not found' });
+  } else {
+    res.sendFile(join(__dirname, '../../index.html'));
+  }
 });
 
 app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   WYATT XXX COLE - Backend API Server                     ║
+║   STORMY MARIE - Backend API Server                     ║
 ║   ─────────────────────────────────────                   ║
 ║   Server running on http://localhost:${PORT}               ║
 ║   Environment: ${process.env.NODE_ENV || 'development'}                          ║

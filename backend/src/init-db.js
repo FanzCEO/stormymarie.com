@@ -13,7 +13,7 @@ const dbConfig = {
   multipleStatements: true
 };
 
-const dbName = process.env.DB_NAME || 'wyattxxxcole';
+const dbName = process.env.DB_NAME || 'stormymarie';
 
 async function initDatabase() {
   console.log('Initializing MariaDB database...');
@@ -345,10 +345,10 @@ async function initDatabase() {
     `);
 
     // =============================================
-    // WYATT WORLD TABLES
+    // STORMY WORLD TABLES
     // =============================================
 
-    // Wyatt World users/members
+    // Stormy World users/members
     await connection.execute(`
       CREATE TABLE IF NOT EXISTS world_users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -368,7 +368,7 @@ async function initDatabase() {
       ) ENGINE=InnoDB
     `);
 
-    // Wyatt World posts (feed)
+    // Stormy World posts (feed)
     await connection.execute(`
       CREATE TABLE IF NOT EXISTS world_posts (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -377,7 +377,7 @@ async function initDatabase() {
         media_urls JSON,
         visibility VARCHAR(50) DEFAULT 'public',
         is_pinned TINYINT(1) DEFAULT 0,
-        is_wyatt_post TINYINT(1) DEFAULT 0,
+        is_stormy_post TINYINT(1) DEFAULT 0,
         likes_count INT DEFAULT 0,
         comments_count INT DEFAULT 0,
         reposts_count INT DEFAULT 0,
@@ -641,14 +641,14 @@ async function initDatabase() {
 
     // Seed sample products
     const sampleProducts = [
-      ['wxc-logo-tee', 'WXC Logo Tee - Black', 'Premium black cotton tee with neon WXC logo', 35, 'apparel', '/assets/products/tee.jpg', 100, 0],
-      ['neon-rebel-hoodie', 'Neon Rebel Hoodie', 'Heavyweight hoodie with reflective neon accents', 65, 'apparel', '/assets/products/hoodie.jpg', 50, 0],
+      ['sm-logo-tee', 'SM Logo Tee - Black', 'Premium black cotton tee with neon SM logo', 35, 'apparel', '/assets/products/tee.jpg', 100, 0],
+      ['neon-vixen-hoodie', 'Neon Vixen Hoodie', 'Heavyweight hoodie with reflective neon accents', 65, 'apparel', '/assets/products/hoodie.jpg', 50, 0],
       ['cyberpunk-portrait', 'Cyberpunk Portrait Print', 'High-quality 11x14 art print on premium paper', 45, 'prints', '/assets/products/portrait.jpg', 30, 0],
       ['neon-wallpaper-pack', 'Neon Wallpaper Pack', '10 exclusive neon-themed digital wallpapers', 15, 'digital', '/assets/products/wallpapers.jpg', 999, 1],
       ['signed-8x10', 'Signed 8x10 Print', 'Hand-signed exclusive 8x10 photograph', 75, 'limited', '/assets/products/signed.jpg', 20, 0],
-      ['wxc-snapback', 'WXC Snapback Cap', 'Adjustable snapback with embroidered logo', 30, 'apparel', '/assets/products/cap.jpg', 75, 0],
+      ['sm-snapback', 'SM Snapback Cap', 'Adjustable snapback with embroidered logo', 30, 'apparel', '/assets/products/cap.jpg', 75, 0],
       ['neon-noir-poster', 'Neon Noir Poster', 'Large 24x36 poster featuring neon noir aesthetic', 25, 'prints', '/assets/products/poster.jpg', 40, 0],
-      ['rebel-cut-tank', 'Rebel Cut Tank Top', 'Distressed tank with rebel cut styling', 28, 'apparel', '/assets/products/tank.jpg', 60, 0],
+      ['vixen-cut-tank', 'Vixen Cut Tank Top', 'Distressed tank with vixen cut styling', 28, 'apparel', '/assets/products/tank.jpg', 60, 0],
     ];
 
     for (const product of sampleProducts) {
@@ -680,10 +680,10 @@ async function initDatabase() {
 
     // Seed sample community posts
     const samplePosts = [
-      ['Welcome to the Neon Rebellion community! This is your space to connect, stay updated on shoots, and get exclusive behind-the-scenes content. Drop a comment and introduce yourself!', null, 'announcement,welcome', 1, 342, 89],
+      ['Welcome to the Neon Seduction community! This is your space to connect, stay updated on shoots, and get exclusive behind-the-scenes content. Drop a comment and introduce yourself!', null, 'announcement,welcome', 1, 342, 89],
       ['Just wrapped an incredible shoot in LA. The neon aesthetics were next level. Full set dropping on my platforms this weekend. Who is ready?', '/assets/community/post1.jpg', 'bts,newscene,neon', 0, 156, 24],
       ['Tour planning for 2025! Vote for where you want to see me next:', null, 'tour,vote', 0, 89, 12],
-      ['New merch alert! The Neon Rebel collection just dropped in the shop. Link in bio. Limited quantities available.', '/assets/community/merch.jpg', 'merch,newdrop', 0, 234, 45],
+      ['New merch alert! The Neon Vixen collection just dropped in the shop. Link in bio. Limited quantities available.', '/assets/community/merch.jpg', 'merch,newdrop', 0, 234, 45],
     ];
 
     for (const post of samplePosts) {
@@ -711,12 +711,12 @@ async function initDatabase() {
     const samplePortfolio = [
       ['photos', 'Neon Dreams', 'Studio shoot with neon lighting', '/assets/portfolio/photo1.jpg', null, 'cyberpunk,neon,studio', 1],
       ['photos', 'Chrome Reflection', 'Industrial chrome aesthetic', '/assets/portfolio/photo2.jpg', null, 'chrome,industrial,portrait', 2],
-      ['photos', 'Leather Edge', 'Edgy leather shoot', '/assets/portfolio/photo3.jpg', null, 'leather,rugged,dark', 3],
+      ['photos', 'Leather Edge', 'Edgy leather shoot', '/assets/portfolio/photo3.jpg', null, 'leather,sultry,dark', 3],
       ['photos', 'Electric Blue', 'Blue neon portrait series', '/assets/portfolio/photo4.jpg', null, 'neon,portrait,editorial', 4],
       ['videos', 'Main Reel 2024', 'Professional showreel', '/assets/portfolio/reel-thumb.jpg', 'https://player.vimeo.com/video/123456', 'reel,professional', 1],
       ['videos', 'BTS Las Vegas', 'Behind the scenes footage', '/assets/portfolio/bts-thumb.jpg', 'https://player.vimeo.com/video/123457', 'bts,lasvegas', 2],
       ['themed', 'Neon Noir Collection', 'Dark neon aesthetic shoot', '/assets/portfolio/noir.jpg', null, 'neonnoir,collection', 1],
-      ['themed', 'Chrome Rebel Series', 'Industrial chrome theme', '/assets/portfolio/chrome.jpg', null, 'chrome,rebel', 2],
+      ['themed', 'Velvet Noir Series', 'Dark velvet theme', '/assets/portfolio/chrome.jpg', null, 'velvet,noir', 2],
       ['bts', 'On Set - LA Studio', 'Raw moments from LA shoot', '/assets/portfolio/bts1.jpg', null, 'bts,la,candid', 1],
       ['bts', 'Makeup & Prep', 'Getting ready for the shoot', '/assets/portfolio/bts2.jpg', null, 'bts,prep', 2],
     ];
@@ -751,18 +751,18 @@ async function initDatabase() {
 
     // Seed default site settings
     const defaultSettings = [
-      ['site_name', 'WYATT XXX COLE', 'string', 'branding'],
-      ['site_tagline', 'Country boy. Dirty mind. No apologies.', 'string', 'branding'],
-      ['site_description', 'Gay masc redneck adult performer and content creator.', 'string', 'branding'],
-      ['logo_text', 'WXXXC', 'string', 'branding'],
+      ['site_name', 'STORMY MARIE', 'string', 'branding'],
+      ['site_tagline', 'Sinfully seductive. Dripping wet. Addictive.', 'string', 'branding'],
+      ['site_description', 'Exotic elegant adult escort and model and content creator.', 'string', 'branding'],
+      ['logo_text', 'SM', 'string', 'branding'],
       ['hero_background_url', '', 'string', 'branding'],
       ['world_background_url', '', 'string', 'branding'],
-      ['contact_email', 'contact@wyattxxxcole.xxx', 'string', 'contact'],
-      ['booking_email', 'booking@wyattxxxcole.xxx', 'string', 'contact'],
-      ['support_email', 'support@wyattxxxcole.xxx', 'string', 'contact'],
-      ['bio_short', 'Just a horny Alabama boy who turned his dirty habits into a career. Gay. Masc. Redneck.', 'text', 'content'],
-      ['bio_full', 'Alabama-bred, gay, masc, and built like the country boys your mama warned you about. Rough hands, dirty mouth, and the kind of intensity that leaves marks. Professional when the camera\'s rolling, feral when it ain\'t.', 'text', 'content'],
-      ['base_city', 'Alabama', 'string', 'content'],
+      ['contact_email', 'contact@stormymarie.xxx', 'string', 'contact'],
+      ['booking_email', 'booking@stormymarie.xxx', 'string', 'contact'],
+      ['support_email', 'support@stormymarie.xxx', 'string', 'contact'],
+      ['bio_short', 'Just a horny Miami girl who turned her dirty habits into a career. Wet. Wild. Irresistible.', 'text', 'content'],
+      ['bio_full', 'Miami-bred, bisexual, and built like every man\'s dirtiest fantasy. Soft skin, filthy mouth, and the kind of curves that ruin marriages. Professional when the camera\'s rolling, absolutely feral when it ain\'t.', 'text', 'content'],
+      ['base_city', 'Miami', 'string', 'content'],
       ['free_shipping_us_threshold', '75', 'number', 'shop'],
       ['free_shipping_intl_threshold', '150', 'number', 'shop'],
       ['currency', 'USD', 'string', 'shop'],
@@ -770,9 +770,9 @@ async function initDatabase() {
       ['booking_enabled', 'true', 'boolean', 'features'],
       ['community_enabled', 'true', 'boolean', 'features'],
       ['schedule_public', 'true', 'boolean', 'features'],
-      ['meta_title', 'Wyatt XXX Cole | Gay Masc Redneck Performer', 'string', 'seo'],
-      ['meta_description', 'Country boy. Dirty mind. No apologies. Gay masc redneck adult performer.', 'text', 'seo'],
-      ['meta_keywords', 'Wyatt XXX Cole, WXXXC, gay, masc, redneck, adult performer, content creator', 'string', 'seo'],
+      ['meta_title', 'Stormy Marie | Exotic Escort & Model', 'string', 'seo'],
+      ['meta_description', 'Sinfully seductive. Dripping wet. Addictive. Exotic escort and model who leaves them begging for more.', 'text', 'seo'],
+      ['meta_keywords', 'Stormy Marie, SM, escort, seductive, exotic, adult performer, content creator', 'string', 'seo'],
     ];
 
     for (const s of defaultSettings) {
@@ -786,9 +786,8 @@ async function initDatabase() {
 
     // Seed social links
     const defaultSocialLinks = [
-      ['boyfanz', '#', '&#9733;', 'BoyFanz', 1, 'content'],
-      ['onlyfans', '#', '&#128293;', 'OnlyFans', 2, 'content'],
-      ['pupfanz', '#', '&#9733;', 'PupFanz', 3, 'content'],
+      ['onlyfans', '#', '&#128293;', 'OnlyFans', 1, 'content'],
+      ['tiktok', '#', '&#127925;', 'TikTok', 2, 'content'],
       ['twitter', '#', '&#120143;', 'X / Twitter', 1, 'social'],
       ['instagram', '#', '&#128247;', 'Instagram', 2, 'social'],
       ['tiktok', '#', '&#127925;', 'TikTok', 3, 'social'],
@@ -812,7 +811,7 @@ async function initDatabase() {
       'popcustoms', 'customink', 'prodigi', 'apliiq', 'dreamship', 'spring',
       'fourthwall', 'contrado', 'teelaunch', 'gearlaunch', 'pillowprofits',
       'mailchimp', 'sendgrid', 'google_analytics', 'facebook_pixel',
-      'boyfanz', 'rentmen', 'podcast'
+      'onlyfans', 'rentmen', 'podcast'
     ];
 
     for (const provider of integrations) {

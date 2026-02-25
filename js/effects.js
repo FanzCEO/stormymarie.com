@@ -1,6 +1,6 @@
 /**
- * WYATT XXX COLE - Visual Effects
- * Country Boy Aesthetic
+ * STORMY MARIE - Visual Effects
+ * Bad Girl Aesthetic
  */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -47,7 +47,7 @@ function initCursor() {
             position: absolute;
             width: 40px;
             height: 40px;
-            border: 2px solid #C68E3F;
+            border: 2px solid #FF10F0;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.15s ease;
@@ -55,11 +55,11 @@ function initCursor() {
         }
         .cursor-hover .cursor-dot {
             transform: translate(-50%, -50%) scale(2);
-            background: #C68E3F;
+            background: #FF10F0;
         }
         .cursor-hover .cursor-ring {
             transform: translate(-50%, -50%) scale(1.5);
-            border-color: #A44A2A;
+            border-color: #B024A8;
             opacity: 1;
         }
         @media (max-width: 768px) {
@@ -148,5 +148,5 @@ document.querySelectorAll('.btn--primary').forEach(btn => {
     });
 });
 
-console.log('%c WXXXC ', 'background: #0D0B09; color: #D4C4A8; font-size: 24px; font-weight: bold; padding: 10px 20px; font-family: serif;');
-console.log('%c Country Bred. Fully Loaded. ', 'color: #C68E3F; font-style: italic;');
+console.log('%c SM ', 'background: #0D0B09; color: #D4C4A8; font-size: 24px; font-weight: bold; padding: 10px 20px; font-family: serif;');
+console.log('%c Dangerously Beautiful. Unforgettable. ', 'color: #FF10F0; font-style: italic;');

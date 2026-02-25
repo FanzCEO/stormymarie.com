@@ -1,11 +1,11 @@
 {
-  "name": "WYATT XXX COLE",
-  "short_name": "WXXXC",
-  "description": "Country Bred. Fully Loaded. - Adult performer, model & content creator",
+  "name": "STORMY MARIE",
+  "short_name": "SM",
+  "description": "Dangerously Beautiful. Unforgettable. - Adult performer, model & content creator",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#C68E3F",
+  "theme_color": "#FF10F0",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en-US",
@@ -94,7 +94,7 @@
       "icons": [{"src": "images/icon-96x96.png", "sizes": "96x96"}]
     },
     {
-      "name": "WXXXC World",
+      "name": "SM World",
       "short_name": "World",
       "url": "/world.html",
       "icons": [{"src": "images/icon-96x96.png", "sizes": "96x96"}]
