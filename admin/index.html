@@ -13,23 +13,133 @@
             padding: var(--space-2xl);
         }
 
-        /* Login Form */
+        /* Login Page */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at 50% 30%, rgba(255, 16, 240, 0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 20% 80%, rgba(176, 36, 168, 0.04) 0%, transparent 50%),
+                        var(--bg-primary);
+        }
+
         .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            background: var(--bg-card);
-            padding: var(--space-2xl);
-            border-radius: var(--radius-lg);
-            border: 1px solid rgba(255, 16, 240, 0.2);
-        }
-        .login-container h1 {
+            max-width: 420px;
+            width: 100%;
+            background: linear-gradient(145deg, rgba(26, 13, 26, 0.9), rgba(17, 17, 17, 0.95));
+            padding: var(--space-2xl) var(--space-2xl) var(--space-xl);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(255, 16, 240, 0.15);
+            box-shadow: 0 0 40px rgba(255, 16, 240, 0.08), 0 20px 60px rgba(0, 0, 0, 0.5);
             text-align: center;
-            margin-bottom: var(--space-xl);
-            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
         }
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--whiskey), transparent);
+        }
+
+        .login-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--whiskey-dark), var(--whiskey-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-lg);
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--bg-primary);
+            box-shadow: 0 0 30px rgba(255, 16, 240, 0.3), 0 0 60px rgba(255, 16, 240, 0.1);
+            animation: loginGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes loginGlow {
+            from { box-shadow: 0 0 20px rgba(255, 16, 240, 0.2), 0 0 40px rgba(255, 16, 240, 0.05); }
+            to { box-shadow: 0 0 35px rgba(255, 16, 240, 0.4), 0 0 70px rgba(255, 16, 240, 0.15); }
+        }
+
+        .login-brand {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            background: var(--gradient-whiskey);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+        .login-subtitle {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-xl);
+        }
+
+        .login-container .form__group {
+            text-align: left;
+            margin-bottom: var(--space-md);
+        }
+        .login-container .form__label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-xs);
+            display: block;
+        }
+        .login-container .form__input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 16, 240, 0.12);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: var(--transition-normal);
+            box-sizing: border-box;
+        }
+        .login-container .form__input:focus {
+            outline: none;
+            border-color: rgba(255, 16, 240, 0.4);
+            box-shadow: 0 0 15px rgba(255, 16, 240, 0.1);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .login-container .btn--primary {
+            margin-top: var(--space-md);
+            padding: 0.85rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .login-footer {
+            margin-top: var(--space-lg);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+        .login-footer a {
+            color: var(--whiskey);
+            text-decoration: none;
+        }
+
         .login-container .logo {
-            text-align: center;
-            margin-bottom: var(--space-xl);
+            display: none;
         }
         .login-container .logo img {
             max-width: 150px;
@@ -483,22 +593,26 @@
 <body>
     <div class="admin-container">
         <!-- Login Form -->
-        <div class="login-container" id="loginForm">
-            <div class="logo">
-                <img src="images/logo.png" alt="SM" onerror="this.style.display='none'">
+        <div class="login-page" id="loginPage">
+            <div class="login-container" id="loginForm">
+                <div class="login-avatar">SM</div>
+                <div class="login-brand">STORMY MARIE</div>
+                <div class="login-subtitle">Admin Panel</div>
+                <form id="adminLoginForm">
+                    <div class="form__group">
+                        <label class="form__label" for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form__input" placeholder="Enter username" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form__input" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary" style="width: 100%;">Sign In</button>
+                </form>
+                <div class="login-footer">
+                    <a href="index.html">Back to site</a>
+                </div>
             </div>
-            <h1>Admin Login</h1>
-            <form id="adminLoginForm">
-                <div class="form__group">
-                    <label class="form__label" for="username">Username</label>
-                    <input type="text" id="username" name="username" class="form__input" required>
-                </div>
-                <div class="form__group">
-                    <label class="form__label" for="password">Password</label>
-                    <input type="password" id="password" name="password" class="form__input" required>
-                </div>
-                <button type="submit" class="btn btn--primary" style="width: 100%;">Login</button>
-            </form>
         </div>
 
         <!-- Dashboard -->
@@ -1055,7 +1169,7 @@
         });
 
         function showDashboard() {
-            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboard').classList.add('active');
         }
 
