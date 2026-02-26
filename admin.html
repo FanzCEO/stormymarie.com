@@ -717,17 +717,36 @@
     </div>
 
     <script>
-        // API Base URL
-        const API_BASE = 'api/upload.php';
+        // API Base URLs
+        const API_AUTH = '/api/auth';
+        const API_ADMIN = '/api/admin';
 
         // Token management
         let authToken = localStorage.getItem('adminToken') || '';
+
+        // Load dashboard stats
+        async function loadStats() {
+            try {
+                const res = await fetch(`${API_ADMIN}/stats`, {
+                    headers: authHeaders()
+                });
+                const data = await res.json();
+                if (data.bookings !== undefined) {
+                    document.getElementById('stat-bookings').textContent = data.bookings?.pending || 0;
+                    document.getElementById('stat-messages').textContent = data.messages?.unread || 0;
+                    document.getElementById('stat-gallery').textContent = data.portfolio?.total || 0;
+                }
+            } catch (err) {
+                // Graceful fallback - keep defaults
+            }
+        }
 
         // Check if logged in on load
         if (authToken) {
             showDashboard();
             loadGallery();
             loadSettings();
+            loadStats();
         }
 
         // Login form
@@ -737,7 +756,7 @@
             const password = document.getElementById('password').value;
 
             try {
-                const res = await fetch(`${API_BASE}?action=login`, {
+                const res = await fetch(`${API_AUTH}/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -745,7 +764,7 @@
 
                 const data = await res.json();
 
-                if (data.success && data.token) {
+                if (data.token) {
                     authToken = data.token;
                     localStorage.setItem('adminToken', authToken);
                     showDashboard();
@@ -756,14 +775,14 @@
                     showNotification(data.error || 'Login failed', 'error');
                 }
             } catch (err) {
-                // Fallback for demo
+                // Fallback for demo/static mode
                 if (username === 'admin' && password === 'StormyAdmin2025!') {
                     authToken = 'demo-token';
                     localStorage.setItem('adminToken', authToken);
                     showDashboard();
                     loadGallery();
                     loadSettings();
-                    showNotification('Welcome back!', 'success');
+                    showNotification('Welcome back! (Demo mode)', 'success');
                 } else {
                     showNotification('Login failed. Check credentials.', 'error');
                 }
@@ -795,13 +814,20 @@
             });
         }
 
+        // Auth header helper
+        function authHeaders(extra = {}) {
+            return { 'Authorization': `Bearer ${authToken}`, ...extra };
+        }
+
         // File upload helper
         async function uploadFile(file, action) {
             const formData = new FormData();
-            formData.append('file', file);
+            formData.append('image', file);
+            formData.append('type', action.replace('upload-', ''));
 
-            const res = await fetch(`${API_BASE}?action=${action}&token=${authToken}`, {
+            const res = await fetch(`${API_ADMIN}/upload/background`, {
                 method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },
                 body: formData
             });
 
@@ -893,25 +919,27 @@
 
         // Load gallery
         async function loadGallery() {
+            const container = document.getElementById('galleryAdmin');
+            const emptyState = document.getElementById('galleryEmpty');
+            const countEl = document.getElementById('galleryCount');
+            const statEl = document.getElementById('stat-gallery');
+
             try {
-                const res = await fetch(`${API_BASE}?action=list-gallery`);
+                const res = await fetch(`${API_ADMIN}/portfolio`, {
+                    headers: authHeaders()
+                });
                 const data = await res.json();
 
-                const container = document.getElementById('galleryAdmin');
-                const emptyState = document.getElementById('galleryEmpty');
-                const countEl = document.getElementById('galleryCount');
-                const statEl = document.getElementById('stat-gallery');
-
-                if (data.success && data.images.length > 0) {
-                    container.innerHTML = data.images.map(img => `
-                        <div class="gallery-item-admin" data-filename="${img.filename}">
-                            <img src="${img.url}" alt="" loading="lazy">
-                            <button class="delete-btn" onclick="deleteGalleryImage('${img.filename}')">&times;</button>
+                if (Array.isArray(data) && data.length > 0) {
+                    container.innerHTML = data.map(img => `
+                        <div class="gallery-item-admin" data-filename="${img.id}">
+                            <img src="${img.image_url || 'images/placeholder.jpg'}" alt="${img.title || ''}" loading="lazy">
+                            <button class="delete-btn" onclick="deleteGalleryImage('${img.id}')">&times;</button>
                         </div>
                     `).join('');
                     emptyState.style.display = 'none';
-                    countEl.textContent = data.images.length;
-                    statEl.textContent = data.images.length;
+                    countEl.textContent = data.length;
+                    statEl.textContent = data.length;
                 } else {
                     container.innerHTML = '';
                     emptyState.style.display = 'block';
@@ -919,24 +947,26 @@
                     statEl.textContent = '0';
                 }
             } catch (err) {
-                console.error('Failed to load gallery:', err);
+                // Graceful fallback - show empty state
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                countEl.textContent = '0';
+                statEl.textContent = '0';
             }
         }
 
         // Delete gallery image
-        async function deleteGalleryImage(filename) {
+        async function deleteGalleryImage(id) {
             if (!confirm('Delete this image?')) return;
 
             try {
-                const res = await fetch(`${API_BASE}?action=delete-gallery&token=${authToken}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ filename })
+                const res = await fetch(`${API_ADMIN}/portfolio/${id}`, {
+                    method: 'DELETE',
+                    headers: authHeaders()
                 });
 
                 const data = await res.json();
-                if (data.success) {
-                    document.querySelector(`[data-filename="${filename}"]`).remove();
+                if (data.message) {
                     loadGallery();
                     showNotification('Image deleted', 'success');
                 } else {
@@ -950,21 +980,19 @@
         // Load settings
         async function loadSettings() {
             try {
-                const res = await fetch(`${API_BASE}?action=get-settings`);
+                const res = await fetch(`${API_ADMIN}/settings`, {
+                    headers: authHeaders()
+                });
                 const data = await res.json();
 
-                if (data.success) {
-                    document.getElementById('settingTagline').value = data.settings.tagline;
-                    document.getElementById('settingReviews').value = data.settings.reviewCount;
-                    document.getElementById('settingEmail').value = data.settings.contactEmail;
-
-                    if (data.settings.heroUrl) {
-                        document.getElementById('heroPreview').innerHTML =
-                            `<img src="${data.settings.heroUrl}" alt="Hero">`;
-                    }
+                if (data && !data.error) {
+                    if (data.tagline) document.getElementById('settingTagline').value = data.tagline;
+                    if (data.review_count) document.getElementById('settingReviews').value = data.review_count;
+                    if (data.contact_email) document.getElementById('settingEmail').value = data.contact_email;
                 }
             } catch (err) {
-                console.error('Failed to load settings:', err);
+                // Graceful fallback - keep default values
+                console.log('Settings API unavailable, using defaults');
             }
         }
 
@@ -974,25 +1002,25 @@
 
             const settings = {
                 tagline: document.getElementById('settingTagline').value,
-                reviewCount: document.getElementById('settingReviews').value,
-                contactEmail: document.getElementById('settingEmail').value
+                review_count: parseInt(document.getElementById('settingReviews').value),
+                contact_email: document.getElementById('settingEmail').value
             };
 
             try {
-                const res = await fetch(`${API_BASE}?action=save-settings&token=${authToken}`, {
+                const res = await fetch(`${API_ADMIN}/settings`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: authHeaders({ 'Content-Type': 'application/json' }),
                     body: JSON.stringify(settings)
                 });
 
                 const data = await res.json();
-                if (data.success) {
+                if (data && !data.error) {
                     showNotification('Settings saved!', 'success');
                 } else {
                     showNotification(data.error || 'Save failed', 'error');
                 }
             } catch (err) {
-                showNotification('Save failed', 'error');
+                showNotification('Save failed (demo mode)', 'error');
             }
         });
 
