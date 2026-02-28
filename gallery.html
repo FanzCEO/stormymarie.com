@@ -149,7 +149,7 @@
         // Load gallery images from API
         async function loadGallery() {
             try {
-                const response = await fetch('api/upload.php?action=list-gallery');
+                const response = await fetch('api/gallery.json');
                 const data = await response.json();
 
                 if (data.success && data.images.length > 0) {

@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "images": [
+    { "filename": "gallery_1.jpg", "url": "images/gallery/gallery_1.jpg", "size": 26068, "modified": 1709136600 },
+    { "filename": "gallery_2.jpg", "url": "images/gallery/gallery_2.jpg", "size": 32701, "modified": 1709136500 },
+    { "filename": "gallery_3.jpg", "url": "images/gallery/gallery_3.jpg", "size": 23077, "modified": 1709136400 },
+    { "filename": "gallery_4.jpg", "url": "images/gallery/gallery_4.jpg", "size": 52759, "modified": 1709136300 },
+    { "filename": "gallery_5.jpg", "url": "images/gallery/gallery_5.jpg", "size": 57098, "modified": 1709136200 },
+    { "filename": "gallery_6.jpg", "url": "images/gallery/gallery_6.jpg", "size": 38835, "modified": 1709136100 },
+    { "filename": "gallery_7.jpg", "url": "images/gallery/gallery_7.jpg", "size": 56118, "modified": 1709136000 },
+    { "filename": "gallery_8.jpg", "url": "images/gallery/gallery_8.jpg", "size": 56292, "modified": 1709135900 }
+  ]
+}

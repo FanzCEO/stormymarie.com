@@ -310,7 +310,7 @@
             if (!gallery) return;
 
             try {
-                const res = await fetch('api/upload.php?action=list-gallery');
+                const res = await fetch('api/gallery.json');
                 const data = await res.json();
 
                 if (data.success && data.images && data.images.length > 0) {
