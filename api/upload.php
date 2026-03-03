@@ -5,7 +5,13 @@
  */
 
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowed = ['https://stormymarie.com', 'https://www.stormymarie.com', 'http://localhost:8000'];
+if (in_array($origin, $allowed)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+} else {
+    header('Access-Control-Allow-Origin: https://stormymarie.com');
+}
 header('Access-Control-Allow-Methods: POST, GET, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
@@ -30,8 +36,7 @@ function checkAuth() {
     // Remove 'Bearer ' prefix if present
     $token = str_replace('Bearer ', '', $token);
 
-    // For simplicity, check against stored token or allow demo token
-    if ($token === 'demo-token' || $token === getStoredToken()) {
+    if ($token && $token === getStoredToken()) {
         return true;
     }
     return false;
@@ -97,6 +102,7 @@ switch ($action) {
         handleSaveSettings();
         break;
     case 'debug':
+        if (!checkAuth()) handleError('Unauthorized', 401);
         respond([
             'success' => true,
             'uploadDir' => UPLOAD_DIR,

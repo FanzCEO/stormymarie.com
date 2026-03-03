@@ -775,17 +775,7 @@
                     showNotification(data.error || 'Login failed', 'error');
                 }
             } catch (err) {
-                // Fallback for demo/static mode
-                if (username === 'admin' && password === 'StormyAdmin2025!') {
-                    authToken = 'demo-token';
-                    localStorage.setItem('adminToken', authToken);
-                    showDashboard();
-                    loadGallery();
-                    loadSettings();
-                    showNotification('Welcome back! (Demo mode)', 'success');
-                } else {
-                    showNotification('Login failed. Check credentials.', 'error');
-                }
+                showNotification('Login failed. Server unavailable.', 'error');
             }
         });
 
