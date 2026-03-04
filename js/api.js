@@ -98,6 +98,70 @@ const StormyAPI = (function() {
         });
     }
 
+    // Auth - current user
+    async function getMe() {
+        return request('/api/upload.php?action=me', {
+            headers: authHeaders()
+        });
+    }
+
+    // Forgot password
+    async function forgotPassword(email) {
+        return request('/api/upload.php?action=forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+    }
+
+    // Change password
+    async function changePassword(currentPassword, newPassword) {
+        return request('/api/upload.php?action=change-password', {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ currentPassword, newPassword })
+        });
+    }
+
+    // Delegate management
+    async function listDelegates() {
+        return request('/api/upload.php?action=list-delegates', {
+            headers: authHeaders()
+        });
+    }
+
+    async function addDelegate(username, email, role) {
+        return request('/api/upload.php?action=add-delegate', {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ username, email, role })
+        });
+    }
+
+    async function updateDelegate(id, updates) {
+        return request('/api/upload.php?action=update-delegate', {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ id, ...updates })
+        });
+    }
+
+    async function removeDelegate(id) {
+        return request('/api/upload.php?action=remove-delegate', {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ id })
+        });
+    }
+
+    async function resendInvite(id) {
+        return request('/api/upload.php?action=resend-invite', {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ id })
+        });
+    }
+
     // Contact form
     async function submitContact(formData) {
         // For static hosting, mailto fallback
@@ -133,6 +197,14 @@ const StormyAPI = (function() {
         getSettings: getSettings,
         saveSettings: saveSettings,
         login: login,
+        getMe: getMe,
+        forgotPassword: forgotPassword,
+        changePassword: changePassword,
+        listDelegates: listDelegates,
+        addDelegate: addDelegate,
+        updateDelegate: updateDelegate,
+        removeDelegate: removeDelegate,
+        resendInvite: resendInvite,
         uploadFile: uploadFile,
         uploadGalleryFiles: uploadGalleryFiles,
         deleteGalleryImage: deleteGalleryImage,

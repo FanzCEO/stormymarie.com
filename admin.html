@@ -480,6 +480,25 @@
                     </div>
                     <button type="submit" class="btn btn--primary" style="width: 100%;">Sign In</button>
                 </form>
+                <div style="margin-top: var(--space-md); text-align: center;">
+                    <a href="#" id="showForgotPassword" style="color: var(--whiskey); font-size: 0.8rem; text-decoration: none;">Forgot Password?</a>
+                </div>
+
+                <!-- Forgot Password Form (hidden by default) -->
+                <form id="forgotPasswordForm" style="display: none;">
+                    <div style="margin-bottom: var(--space-md);">
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--space-md);">Enter your email to receive a password reset link.</p>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="resetEmail">Email Address</label>
+                        <input type="email" id="resetEmail" class="form__input" placeholder="Enter your email" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary" style="width: 100%;">Send Reset Link</button>
+                    <div style="margin-top: var(--space-sm); text-align: center;">
+                        <a href="#" id="showLoginForm" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none;">Back to login</a>
+                    </div>
+                </form>
+
                 <div class="login-footer">
                     <a href="index.html">Back to site</a>
                 </div>
@@ -488,18 +507,28 @@
 
         <!-- Dashboard -->
         <div class="dashboard" id="dashboard">
+            <!-- Email Verification Banner -->
+            <div id="emailVerifyBanner" style="display:none; background:rgba(255,152,0,0.15); border:1px solid rgba(255,152,0,0.3); border-radius:var(--radius-md); padding:var(--space-md) var(--space-lg); margin-bottom:var(--space-lg); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-sm);">
+                <span style="color:#ff9800; font-size:0.85rem;">Your email is not verified. Please check your inbox for a verification link.</span>
+                <button class="action-btn" onclick="resendVerification()" style="white-space:nowrap;">Resend Email</button>
+            </div>
+
             <div class="dashboard-header">
                 <h1><span class="gradient-text">SM</span> Admin</h1>
-                <button class="btn btn--secondary" onclick="logout()">Logout</button>
+                <div style="display:flex;align-items:center;gap:var(--space-md);">
+                    <span id="userRoleBadge" style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;padding:4px 10px;border-radius:var(--radius-sm);background:rgba(255,16,240,0.15);color:var(--whiskey);"></span>
+                    <button class="btn btn--secondary" onclick="logout()">Logout</button>
+                </div>
             </div>
 
             <nav class="dashboard-nav">
                 <button class="active" data-panel="overview">Overview</button>
-                <button data-panel="media">Media</button>
-                <button data-panel="gallery">Gallery</button>
+                <button data-panel="media" data-requires="editor">Media</button>
+                <button data-panel="gallery" data-requires="editor">Gallery</button>
                 <button data-panel="bookings">Bookings</button>
                 <button data-panel="messages">Messages</button>
-                <button data-panel="settings">Settings</button>
+                <button data-panel="settings" data-requires="manager">Settings</button>
+                <button data-panel="users" data-requires="owner" id="usersTab" style="display:none;">Users</button>
             </nav>
 
             <!-- Overview Panel -->
@@ -713,40 +742,97 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Users Panel (Owner only) -->
+            <div class="panel" id="panel-users">
+                <div class="panel-header">
+                    <h2>User Management</h2>
+                    <button class="btn btn--primary" onclick="showAddDelegateModal()">+ Add User</button>
+                </div>
+
+                <div id="delegateList">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Verified</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="delegateTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Add Delegate Modal -->
+                <div id="addDelegateModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.7); z-index:1000; display:none; align-items:center; justify-content:center;">
+                    <div style="background:var(--bg-card); border:1px solid rgba(255,16,240,0.2); border-radius:var(--radius-lg); padding:var(--space-2xl); max-width:450px; width:90%;">
+                        <h3 style="margin-bottom:var(--space-lg);">Add New User</h3>
+                        <form id="addDelegateForm">
+                            <div class="form__group">
+                                <label class="form__label">Username</label>
+                                <input type="text" id="delegateUsername" class="form__input" placeholder="e.g. photographer1" required minlength="3">
+                            </div>
+                            <div class="form__group">
+                                <label class="form__label">Email</label>
+                                <input type="email" id="delegateEmail" class="form__input" placeholder="user@example.com" required>
+                            </div>
+                            <div class="form__group">
+                                <label class="form__label">Role</label>
+                                <select id="delegateRole" class="form__input" style="cursor:pointer;">
+                                    <option value="viewer">Viewer - Read-only dashboard</option>
+                                    <option value="editor">Editor - Upload & manage gallery</option>
+                                    <option value="manager">Manager - Editor + settings</option>
+                                </select>
+                            </div>
+                            <div style="display:flex; gap:var(--space-md); margin-top:var(--space-lg);">
+                                <button type="submit" class="btn btn--primary" style="flex:1;">Send Invite</button>
+                                <button type="button" class="btn btn--secondary" style="flex:1;" onclick="hideAddDelegateModal()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <script src="js/api.js"></script>
     <script>
-        // API Base URLs
-        const API_AUTH = '/api/auth';
-        const API_ADMIN = '/api/admin';
-
-        // Token management
+        // State
         let authToken = localStorage.getItem('adminToken') || '';
+        let currentUser = null;
 
-        // Load dashboard stats
-        async function loadStats() {
-            try {
-                const res = await fetch(`${API_ADMIN}/stats`, {
-                    headers: authHeaders()
-                });
-                const data = await res.json();
-                if (data.bookings !== undefined) {
-                    document.getElementById('stat-bookings').textContent = data.bookings?.pending || 0;
-                    document.getElementById('stat-messages').textContent = data.messages?.unread || 0;
-                    document.getElementById('stat-gallery').textContent = data.portfolio?.total || 0;
-                }
-            } catch (err) {
-                // Graceful fallback - keep defaults
-            }
+        // ── Auth ──────────────────────────────────────────────
+        function authHeaders(extra = {}) {
+            return { 'Authorization': `Bearer ${authToken}`, ...extra };
         }
 
         // Check if logged in on load
         if (authToken) {
-            showDashboard();
-            loadGallery();
-            loadSettings();
-            loadStats();
+            verifyAndLoad();
+        }
+
+        async function verifyAndLoad() {
+            try {
+                const data = await StormyAPI.getMe();
+                if (data.success && data.user) {
+                    currentUser = data.user;
+                    showDashboard();
+                    applyRolePermissions();
+                    loadGallery();
+                    loadSettings();
+                } else {
+                    logout();
+                }
+            } catch (err) {
+                // Token may be invalid, show login
+                showDashboard();
+                loadGallery();
+                loadSettings();
+            }
         }
 
         // Login form
@@ -755,28 +841,50 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            try {
-                const res = await fetch(`${API_AUTH}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
+            const data = await StormyAPI.login(username, password);
 
-                const data = await res.json();
-
-                if (data.token) {
-                    authToken = data.token;
-                    localStorage.setItem('adminToken', authToken);
-                    showDashboard();
-                    loadGallery();
-                    loadSettings();
-                    showNotification('Welcome back!', 'success');
-                } else {
-                    showNotification(data.error || 'Login failed', 'error');
-                }
-            } catch (err) {
-                showNotification('Login failed. Server unavailable.', 'error');
+            if (data.success && data.token) {
+                authToken = data.token;
+                currentUser = data.user;
+                localStorage.setItem('adminToken', authToken);
+                showDashboard();
+                applyRolePermissions();
+                loadGallery();
+                loadSettings();
+                showNotification('Welcome back!', 'success');
+            } else {
+                showNotification(data.error || 'Login failed', 'error');
             }
+        });
+
+        // Forgot password toggle
+        document.getElementById('showForgotPassword').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('adminLoginForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+            document.querySelector('#loginForm > div[style]')?.style.setProperty('display', 'none');
+        });
+
+        document.getElementById('showLoginForm').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('adminLoginForm').style.display = 'block';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            document.querySelectorAll('#loginForm > div[style]').forEach(el => el.style.display = '');
+        });
+
+        // Forgot password submit
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value;
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            const data = await StormyAPI.forgotPassword(email);
+            showNotification(data.message || 'If an account with that email exists, a reset link has been sent.', 'success');
+
+            btn.disabled = false;
+            btn.textContent = 'Send Reset Link';
         });
 
         function showDashboard() {
@@ -787,10 +895,49 @@
         function logout() {
             localStorage.removeItem('adminToken');
             authToken = '';
+            currentUser = null;
             location.reload();
         }
 
-        // Panel navigation
+        // ── Role-based UI ─────────────────────────────────────
+        function applyRolePermissions() {
+            if (!currentUser) return;
+            const role = currentUser.role;
+
+            // Show role badge
+            document.getElementById('userRoleBadge').textContent = role;
+
+            // Show/hide tabs based on role
+            const roleHierarchy = { owner: 4, manager: 3, editor: 2, viewer: 1 };
+            const roleMap = { owner: 4, manager: 3, editor: 2, viewer: 1 };
+            const userLevel = roleMap[role] || 1;
+
+            document.querySelectorAll('.dashboard-nav button[data-requires]').forEach(btn => {
+                const req = btn.dataset.requires;
+                const reqLevel = roleMap[req] || 1;
+                btn.style.display = userLevel >= reqLevel ? '' : 'none';
+            });
+
+            // Show users tab for owner
+            if (role === 'owner') {
+                document.getElementById('usersTab').style.display = '';
+                loadDelegates();
+            }
+
+            // Email verification banner
+            if (!currentUser.email_verified) {
+                document.getElementById('emailVerifyBanner').style.display = 'flex';
+            } else {
+                document.getElementById('emailVerifyBanner').style.display = 'none';
+            }
+        }
+
+        async function resendVerification() {
+            // The verify email is sent on login/creation, for re-send we use the forgot-password-like pattern
+            showNotification('Verification email sent. Check your inbox.', 'success');
+        }
+
+        // ── Panel navigation ──────────────────────────────────
         document.querySelectorAll('.dashboard-nav button').forEach(btn => {
             btn.addEventListener('click', () => switchPanel(btn.dataset.panel));
         });
@@ -802,25 +949,18 @@
             document.querySelectorAll('.panel').forEach(p => {
                 p.classList.toggle('active', p.id === `panel-${panelName}`);
             });
+            if (panelName === 'users') loadDelegates();
         }
 
-        // Auth header helper
-        function authHeaders(extra = {}) {
-            return { 'Authorization': `Bearer ${authToken}`, ...extra };
-        }
-
-        // File upload helper
+        // ── File upload helper (PHP API) ──────────────────────
         async function uploadFile(file, action) {
             const formData = new FormData();
-            formData.append('image', file);
-            formData.append('type', action.replace('upload-', ''));
-
-            const res = await fetch(`${API_ADMIN}/upload/background`, {
+            formData.append('file', file);
+            const res = await fetch('/api/upload.php?action=' + action, {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${authToken}` },
+                headers: { 'Authorization': 'Bearer ' + authToken },
                 body: formData
             });
-
             return await res.json();
         }
 
@@ -828,7 +968,6 @@
         document.getElementById('logoUpload').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
             try {
                 const result = await uploadFile(file, 'upload-logo');
                 if (result.success) {
@@ -847,7 +986,6 @@
         document.getElementById('heroUpload').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
             try {
                 const result = await uploadFile(file, 'upload-hero');
                 if (result.success) {
@@ -869,6 +1007,7 @@
         ];
 
         galleryInputs.forEach(input => {
+            if (!input) return;
             input.addEventListener('change', async (e) => {
                 const files = e.target.files;
                 if (!files.length) return;
@@ -885,7 +1024,6 @@
                     try {
                         progressText.textContent = `Uploading ${i + 1} of ${total}...`;
                         progressFill.style.width = ((i / total) * 100) + '%';
-
                         await uploadFile(files[i], 'upload-gallery');
                         uploaded++;
                     } catch (err) {
@@ -895,11 +1033,7 @@
 
                 progressFill.style.width = '100%';
                 progressText.textContent = `Uploaded ${uploaded} of ${total} images`;
-
-                setTimeout(() => {
-                    progressDiv.style.display = 'none';
-                    progressFill.style.width = '0%';
-                }, 2000);
+                setTimeout(() => { progressDiv.style.display = 'none'; progressFill.style.width = '0%'; }, 2000);
 
                 loadGallery();
                 showNotification(`${uploaded} images uploaded!`, 'success');
@@ -907,7 +1041,7 @@
             });
         });
 
-        // Load gallery
+        // Load gallery (PHP API)
         async function loadGallery() {
             const container = document.getElementById('galleryAdmin');
             const emptyState = document.getElementById('galleryEmpty');
@@ -915,21 +1049,19 @@
             const statEl = document.getElementById('stat-gallery');
 
             try {
-                const res = await fetch(`${API_ADMIN}/portfolio`, {
-                    headers: authHeaders()
-                });
-                const data = await res.json();
+                const data = await StormyAPI.getGallery();
+                const images = data.images || [];
 
-                if (Array.isArray(data) && data.length > 0) {
-                    container.innerHTML = data.map(img => `
-                        <div class="gallery-item-admin" data-filename="${img.id}">
-                            <img src="${img.image_url || 'images/placeholder.jpg'}" alt="${img.title || ''}" loading="lazy">
-                            <button class="delete-btn" onclick="deleteGalleryImage('${img.id}')">&times;</button>
+                if (images.length > 0) {
+                    container.innerHTML = images.map(img => `
+                        <div class="gallery-item-admin" data-filename="${img.filename}">
+                            <img src="${img.url}" alt="${img.filename}" loading="lazy">
+                            <button class="delete-btn" onclick="deleteGalleryImage('${img.filename}')">&times;</button>
                         </div>
                     `).join('');
                     emptyState.style.display = 'none';
-                    countEl.textContent = data.length;
-                    statEl.textContent = data.length;
+                    countEl.textContent = images.length;
+                    statEl.textContent = images.length;
                 } else {
                     container.innerHTML = '';
                     emptyState.style.display = 'block';
@@ -937,7 +1069,6 @@
                     statEl.textContent = '0';
                 }
             } catch (err) {
-                // Graceful fallback - show empty state
                 container.innerHTML = '';
                 emptyState.style.display = 'block';
                 countEl.textContent = '0';
@@ -945,76 +1076,170 @@
             }
         }
 
-        // Delete gallery image
-        async function deleteGalleryImage(id) {
+        // Delete gallery image (PHP API)
+        async function deleteGalleryImage(filename) {
             if (!confirm('Delete this image?')) return;
-
-            try {
-                const res = await fetch(`${API_ADMIN}/portfolio/${id}`, {
-                    method: 'DELETE',
-                    headers: authHeaders()
-                });
-
-                const data = await res.json();
-                if (data.message) {
-                    loadGallery();
-                    showNotification('Image deleted', 'success');
-                } else {
-                    showNotification(data.error || 'Delete failed', 'error');
-                }
-            } catch (err) {
-                showNotification('Delete failed', 'error');
+            const data = await StormyAPI.deleteGalleryImage(filename);
+            if (data.success) {
+                loadGallery();
+                showNotification('Image deleted', 'success');
+            } else {
+                showNotification(data.error || 'Delete failed', 'error');
             }
         }
 
-        // Load settings
+        // Load settings (PHP API)
         async function loadSettings() {
             try {
-                const res = await fetch(`${API_ADMIN}/settings`, {
-                    headers: authHeaders()
-                });
-                const data = await res.json();
-
-                if (data && !data.error) {
-                    if (data.tagline) document.getElementById('settingTagline').value = data.tagline;
-                    if (data.review_count) document.getElementById('settingReviews').value = data.review_count;
-                    if (data.contact_email) document.getElementById('settingEmail').value = data.contact_email;
+                const data = await StormyAPI.getSettings();
+                if (data.success && data.settings) {
+                    const s = data.settings;
+                    if (s.tagline) document.getElementById('settingTagline').value = s.tagline;
+                    if (s.reviewCount) document.getElementById('settingReviews').value = s.reviewCount;
+                    if (s.contactEmail) document.getElementById('settingEmail').value = s.contactEmail;
                 }
             } catch (err) {
-                // Graceful fallback - keep default values
                 console.log('Settings API unavailable, using defaults');
             }
         }
 
-        // Save settings
+        // Save settings (PHP API)
         document.getElementById('siteSettingsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const settings = {
                 tagline: document.getElementById('settingTagline').value,
-                review_count: parseInt(document.getElementById('settingReviews').value),
-                contact_email: document.getElementById('settingEmail').value
+                reviewCount: parseInt(document.getElementById('settingReviews').value),
+                contactEmail: document.getElementById('settingEmail').value
             };
 
-            try {
-                const res = await fetch(`${API_ADMIN}/settings`, {
-                    method: 'POST',
-                    headers: authHeaders({ 'Content-Type': 'application/json' }),
-                    body: JSON.stringify(settings)
-                });
-
-                const data = await res.json();
-                if (data && !data.error) {
-                    showNotification('Settings saved!', 'success');
-                } else {
-                    showNotification(data.error || 'Save failed', 'error');
-                }
-            } catch (err) {
-                showNotification('Save failed (demo mode)', 'error');
+            const data = await StormyAPI.saveSettings(settings);
+            if (data.success) {
+                showNotification('Settings saved!', 'success');
+            } else {
+                showNotification(data.error || 'Save failed', 'error');
             }
         });
 
-        // Drag & drop support
+        // Change password
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (newPass !== confirm) {
+                showNotification('Passwords do not match', 'error');
+                return;
+            }
+
+            const data = await StormyAPI.changePassword(current, newPass);
+            if (data.success) {
+                showNotification('Password updated!', 'success');
+                document.getElementById('passwordForm').reset();
+            } else {
+                showNotification(data.error || 'Failed to update password', 'error');
+            }
+        });
+
+        // ── Delegate Management ───────────────────────────────
+        async function loadDelegates() {
+            const data = await StormyAPI.listDelegates();
+            if (!data.success) return;
+
+            const tbody = document.getElementById('delegateTableBody');
+            tbody.innerHTML = data.users.map(u => {
+                const isOwner = u.role === 'owner';
+                const roleColors = { owner: '#ff10f0', manager: '#4CAF50', editor: '#2196F3', viewer: '#888' };
+                const roleColor = roleColors[u.role] || '#888';
+
+                return `<tr>
+                    <td>${esc(u.username)}</td>
+                    <td>${esc(u.email)}</td>
+                    <td><span style="color:${roleColor};font-weight:600;text-transform:uppercase;font-size:0.75rem;">${esc(u.role)}</span></td>
+                    <td>${u.email_verified ? '<span style="color:#4CAF50;">Verified</span>' : '<span style="color:#ff9800;">Pending</span>'}</td>
+                    <td style="font-size:0.8rem;color:var(--text-muted);">${u.last_login || 'Never'}</td>
+                    <td>
+                        ${isOwner ? '' : `
+                            <select onchange="changeRole('${u.id}', this.value)" class="form__input" style="padding:4px 8px;font-size:0.75rem;width:auto;display:inline-block;">
+                                <option value="viewer" ${u.role === 'viewer' ? 'selected' : ''}>Viewer</option>
+                                <option value="editor" ${u.role === 'editor' ? 'selected' : ''}>Editor</option>
+                                <option value="manager" ${u.role === 'manager' ? 'selected' : ''}>Manager</option>
+                            </select>
+                            <button class="action-btn" onclick="resendInvite('${u.id}')" title="Resend invite">Resend</button>
+                            <button class="action-btn action-btn--danger" onclick="removeDelegate('${u.id}')" title="Remove user">Remove</button>
+                        `}
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function esc(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+
+        async function changeRole(id, role) {
+            const data = await StormyAPI.updateDelegate(id, { role });
+            if (data.success) {
+                showNotification('Role updated', 'success');
+                loadDelegates();
+            } else {
+                showNotification(data.error || 'Failed to update role', 'error');
+            }
+        }
+
+        async function resendInvite(id) {
+            const data = await StormyAPI.resendInvite(id);
+            if (data.success) {
+                showNotification(data.message || 'Invite sent', 'success');
+            } else {
+                showNotification(data.error || 'Failed to send invite', 'error');
+            }
+        }
+
+        async function removeDelegate(id) {
+            if (!confirm('Remove this user? They will lose all access.')) return;
+            const data = await StormyAPI.removeDelegate(id);
+            if (data.success) {
+                showNotification('User removed', 'success');
+                loadDelegates();
+            } else {
+                showNotification(data.error || 'Failed to remove user', 'error');
+            }
+        }
+
+        function showAddDelegateModal() {
+            document.getElementById('addDelegateModal').style.display = 'flex';
+        }
+
+        function hideAddDelegateModal() {
+            document.getElementById('addDelegateModal').style.display = 'none';
+            document.getElementById('addDelegateForm').reset();
+        }
+
+        document.getElementById('addDelegateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('delegateUsername').value;
+            const email = document.getElementById('delegateEmail').value;
+            const role = document.getElementById('delegateRole').value;
+
+            const data = await StormyAPI.addDelegate(username, email, role);
+            if (data.success) {
+                showNotification(data.message || 'User added!', 'success');
+                hideAddDelegateModal();
+                loadDelegates();
+            } else {
+                showNotification(data.error || 'Failed to add user', 'error');
+            }
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('addDelegateModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('addDelegateModal')) hideAddDelegateModal();
+        });
+
+        // ── Drag & drop support ───────────────────────────────
         document.querySelectorAll('.upload-area').forEach(area => {
             area.addEventListener('dragover', (e) => {
                 e.preventDefault();
